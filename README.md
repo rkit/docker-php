@@ -1,8 +1,8 @@
-# Docker for PHP Development Stack 
+# Docker for PHP Development Stack
 
 ## Soft
 
-- PHP 5.5.25  
+- PHP (5.5, 5.6)  
   fpm, redis, mongo, gd, imagick, xdebug, memcache, memcached, icu (55.1), opcache
 - Ruby
 - Git
@@ -11,6 +11,9 @@
 
 ## Install
 
-   ```
-   docker pull rkit/docker-php:5.5
-   ```
+```shell
+# with php 5.5
+docker pull rkit/docker-php:5.5
+# with php 5.6
+docker pull rkit/docker-php:5.6
+```
