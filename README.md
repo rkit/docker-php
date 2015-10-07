@@ -1,4 +1,4 @@
-# Docker for PHP Development Stack
+# Docker for PHP Stack
 
 ## Soft
 
