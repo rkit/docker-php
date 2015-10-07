@@ -13,7 +13,7 @@
 
 ```shell
 # with php 5.5
-docker pull rkit/docker-php:5.5
+docker pull rkit/docker-phpstack:5.5
 # with php 5.6
-docker pull rkit/docker-php:5.6
+docker pull rkit/docker-phpstack:5.6
 ```
