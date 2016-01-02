@@ -67,4 +67,4 @@ RUN apt-get install tzdata && \
 
 EXPOSE 9000
 
-CMD ["php-fpm"]
+CMD ["php-fpm", "--allow-to-run-as-root"]
