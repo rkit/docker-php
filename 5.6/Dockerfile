@@ -31,7 +31,7 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     docker-php-ext-install mbstring
 
 RUN pecl channel-update pecl.php.net && \
-    pecl install redis && \
+    pecl install redis-2.2.8 && \
     pecl install mongo && \
     pecl install memcache && \
     pecl install memcached && \
