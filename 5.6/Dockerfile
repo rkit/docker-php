@@ -3,6 +3,7 @@ FROM php:5.6.14-fpm
 # --- SOFT --- #
 
 RUN apt-get update && apt-get install -y \
+    openssh-client \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libmcrypt-dev \
@@ -66,4 +67,4 @@ RUN apt-get install tzdata && \
 
 EXPOSE 9000
 
-CMD ["php-fpm"]
+CMD ["php-fpm", "--allow-to-run-as-root"]
