@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     imagemagick \
     libmagickwand-6.q16-dev --no-install-recommends \
     wget \
+    sendmail \
     git \
     ruby \
     nodejs \
