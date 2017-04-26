@@ -1,9 +1,24 @@
 # Docker for PHP Stack
 
+PHP 5.5, 5.6, 7.1
+
+## Extensions
+
+- gd
+- opcache
+- zip
+- pdo_mysql
+- mysqli
+- mbstring
+- redis
+- mongo
+- memcached
+- xdebug
+- imagick
+- intl
+
 ## Soft
 
-- PHP 5.5 / 5.6  
-  - fpm, redis, mongo, gd, imagick, xdebug, memcache, memcached, icu (55.1), opcache
 - Ruby
 - Git
 - Nodejs + NPM
@@ -16,4 +31,6 @@
 docker pull rkit/docker-phpstack:5.5
 # PHP 5.6
 docker pull rkit/docker-phpstack:5.6
+# PHP 7.1
+docker pull rkit/docker-phpstack:7.1
 ```
