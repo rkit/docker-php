@@ -32,16 +32,14 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     docker-php-ext-install mbstring
 
 RUN pecl channel-update pecl.php.net && \
-    pecl install redis-2.2.8 && \
-    pecl install mongo && \
-    pecl install memcache && \
+    pecl install redis && \
+    pecl install mongodb && \
     pecl install memcached && \
     pecl install xdebug && \
     pecl install imagick
 
-RUN echo "extension=mongo.so" > /usr/local/etc/php/conf.d/ext-mongo.ini && \
-    echo "extension=redis.so" > /usr/local/etc/php/conf.d/ext-redis.ini && \
-    echo "extension=memcache.so" > /usr/local/etc/php/conf.d/ext-memcache.ini && \
+RUN echo "extension=redis.so" > /usr/local/etc/php/conf.d/ext-redis.ini && \
+    echo "extension=mongodb.so" > /usr/local/etc/php/conf.d/ext-mongodb.ini && \
     echo "extension=memcached.so" > /usr/local/etc/php/conf.d/ext-memcached.ini && \
     echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini && \
     echo "zend_extension=xdebug.so" > /usr/local/etc/php/conf.d/ext-xdebug.ini
@@ -61,8 +59,16 @@ RUN apt-get install tzdata && \
     CPPFLAGS="-DU_CHARSET_IS_UTF8=1" ../icu/source/runConfigureICU Linux && \
     make install && \
     apt-get install -y libicu-dev && \
-    pecl install intl && \
-    echo "extension=intl.so" > /usr/local/etc/php/conf.d/ext-intl.ini
+    wget https://github.com/php/php-src/archive/php-7.1.4.tar.gz && \
+    tar -xvf php-7.1.4.tar.gz && \
+    cd php-src-php-7.1.4/ext/intl && \
+    export LD_LIBRARY_PATH=/usr/local/lib/icu && \
+    phpize && \
+    ./configure --enable-intl --with-icu-dir=DEFAULT && \
+    make && \
+    make install && \
+    echo "extension=intl.so" > /usr/local/etc/php/conf.d/ext-intl.ini && \
+    rm -fr build
 
 # --- PREPARE --- #
 
