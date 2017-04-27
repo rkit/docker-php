@@ -36,7 +36,7 @@ RUN pecl channel-update pecl.php.net && \
     pecl install redis-2.2.8 && \
     pecl install mongo && \
     pecl install memcache && \
-    pecl install memcached && \
+    pecl install memcached-2.2.0 && \
     pecl install xdebug && \
     pecl install imagick
 
