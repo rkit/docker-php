@@ -44,7 +44,7 @@ RUN echo "extension=redis.so" > /usr/local/etc/php/conf.d/ext-redis.ini && \
 # --- NODE --- #
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
-RUN apt-get install -y nodejs && ln -s "$(which nodejs)" /usr/bin/node
+RUN apt-get install -y nodejs
 
 # --- COMPOSER --- #
 
