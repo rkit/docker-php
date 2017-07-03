@@ -16,13 +16,9 @@ RUN apt-get update && apt-get install -y \
     libmagickwand-6.q16-dev --no-install-recommends \
     wget \
     sendmail \
-    git \
-    ruby \
-    nodejs \
-    npm
+    git
 
-RUN ln -s /usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/MagickWand-config /usr/bin && \
-    ln -s "$(which nodejs)" /usr/bin/node
+RUN ln -s /usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/MagickWand-config /usr/bin
 
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd && \
@@ -44,6 +40,11 @@ RUN echo "extension=redis.so" > /usr/local/etc/php/conf.d/ext-redis.ini && \
     echo "extension=memcached.so" > /usr/local/etc/php/conf.d/ext-memcached.ini && \
     echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini && \
     echo "zend_extension=xdebug.so" > /usr/local/etc/php/conf.d/ext-xdebug.ini
+
+# --- NODE --- #
+
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN apt-get install -y nodejs && ln -s "$(which nodejs)" /usr/bin/node
 
 # --- COMPOSER --- #
 

@@ -19,18 +19,17 @@ PHP 5.5, 5.6, 7.1
 
 ## Soft
 
-- Ruby
-- Git
-- Nodejs + NPM
 - Composer
+- Node.js + NPM
+- Git
 
 ## Install
 
 ```shell
-# PHP 5.5
+# or
 docker pull rkit/docker-phpstack:5.5
-# PHP 5.6
+# or
 docker pull rkit/docker-phpstack:5.6
-# PHP 7.1
+# or
 docker pull rkit/docker-phpstack:7.1
 ```
