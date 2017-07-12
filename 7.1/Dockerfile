@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     libmcrypt-dev \
     libpng12-dev \
+    libicu-dev \
     zlib1g-dev \
     libssl-dev \
     g++ \
@@ -26,7 +27,8 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     docker-php-ext-install zip && \
     docker-php-ext-install pdo_mysql && \
     docker-php-ext-install mysqli && \
-    docker-php-ext-install mbstring
+    docker-php-ext-install mbstring && \
+    docker-php-ext-install intl
 
 RUN pecl channel-update pecl.php.net && \
     pecl install redis && \
@@ -59,18 +61,7 @@ RUN apt-get install tzdata && \
     mkdir -p build && \
     cd build && \
     CPPFLAGS="-DU_CHARSET_IS_UTF8=1" ../icu/source/runConfigureICU Linux && \
-    make install && \
-    apt-get install -y libicu-dev && \
-    wget https://github.com/php/php-src/archive/php-7.1.4.tar.gz && \
-    tar -xvf php-7.1.4.tar.gz && \
-    cd php-src-php-7.1.4/ext/intl && \
-    export LD_LIBRARY_PATH=/usr/local/lib/icu && \
-    phpize && \
-    ./configure --enable-intl --with-icu-dir=DEFAULT && \
-    make && \
-    make install && \
-    echo "extension=intl.so" > /usr/local/etc/php/conf.d/ext-intl.ini && \
-    rm -fr build
+    make install
 
 # --- PREPARE --- #
 
