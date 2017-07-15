@@ -1,14 +1,12 @@
 FROM php:7.1.4-fpm
 
-# --- SOFT --- #
-
 RUN apt-get update && apt-get install -y \
+    tzdata \
     openssh-client \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libmcrypt-dev \
     libpng12-dev \
-    libicu-dev \
     zlib1g-dev \
     libssl-dev \
     g++ \
@@ -17,7 +15,8 @@ RUN apt-get update && apt-get install -y \
     libmagickwand-6.q16-dev --no-install-recommends \
     wget \
     sendmail \
-    git
+    git \
+    ruby
 
 RUN ln -s /usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/MagickWand-config /usr/bin
 
@@ -28,7 +27,7 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     docker-php-ext-install pdo_mysql && \
     docker-php-ext-install mysqli && \
     docker-php-ext-install mbstring && \
-    docker-php-ext-install intl
+    docker-php-ext-enable intl
 
 RUN pecl channel-update pecl.php.net && \
     pecl install redis && \
@@ -55,15 +54,20 @@ RUN mv composer.phar /usr/local/bin/composer
 
 # --- ICU --- #
 
-RUN apt-get install tzdata && \
-    wget http://download.icu-project.org/files/icu4c/55.1/icu4c-55_1-src.tgz -O icu4c-55_1-src.tgz && \
-    tar -zxvf icu4c-55_1-src.tgz && \
-    mkdir -p build && \
-    cd build && \
-    CPPFLAGS="-DU_CHARSET_IS_UTF8=1" ../icu/source/runConfigureICU Linux && \
-    make install
-
-# --- PREPARE --- #
+RUN mkdir /opt/tmp && \
+    cd /opt/tmp && mkdir icu && cd icu && \
+    wget http://download.icu-project.org/files/icu4c/58.2/icu4c-58_2-src.tgz && \
+    tar zxvf icu4c-58_2-src.tgz && \
+    cd icu/source && \
+    ./configure --prefix=/opt/icu582 && make && make install && \
+    cd /opt/tmp && mkdir php-intl && cd php-intl && \
+    git clone https://github.com/php/php-src.git && \
+    cd php-src && \
+    git checkout php-7.1.4 && \
+    cd ext/intl && \
+    phpize && \
+    ./configure --with-php-config=php-config --with-icu-dir=/opt/icu582 && \
+    make && make install
 
 EXPOSE 9000
 
