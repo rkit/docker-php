@@ -1,5 +1,15 @@
 FROM php:7.1.4-fpm
 
+# --- ICU --- #
+
+RUN mkdir /opt/tmp && \
+    cd /opt/tmp && mkdir icu && cd icu && \
+    wget http://download.icu-project.org/files/icu4c/58.2/icu4c-58_2-src.tgz && \
+    tar zxvf icu4c-58_2-src.tgz && \
+    cd icu/source && \
+    ./configure --prefix==/usr/local && make && make install && \
+    rm -rf /opt/tmp
+
 RUN apt-get update && apt-get install -y \
     tzdata \
     openssh-client \
@@ -51,23 +61,6 @@ RUN apt-get install -y nodejs
 
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
-
-# --- ICU --- #
-
-RUN mkdir /opt/tmp && \
-    cd /opt/tmp && mkdir icu && cd icu && \
-    wget http://download.icu-project.org/files/icu4c/58.2/icu4c-58_2-src.tgz && \
-    tar zxvf icu4c-58_2-src.tgz && \
-    cd icu/source && \
-    ./configure --prefix=/opt/icu582 && make && make install && \
-    cd /opt/tmp && mkdir php-intl && cd php-intl && \
-    git clone https://github.com/php/php-src.git && \
-    cd php-src && \
-    git checkout php-7.1.4 && \
-    cd ext/intl && \
-    phpize && \
-    ./configure --with-php-config=php-config --with-icu-dir=/opt/icu582 && \
-    make && make install
 
 EXPOSE 9000
 
