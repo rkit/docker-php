@@ -1,8 +1,7 @@
 FROM php:5.6.14-fpm
 
-# --- SOFT --- #
-
 RUN apt-get update && apt-get install -y \
+    tzdata \
     openssh-client \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
@@ -17,12 +16,9 @@ RUN apt-get update && apt-get install -y \
     wget \
     sendmail \
     git \
-    ruby \
-    nodejs \
-    npm
+    ruby
 
-RUN ln -s /usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/MagickWand-config /usr/bin && \
-    ln -s "$(which nodejs)" /usr/bin/node
+RUN ln -s /usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/MagickWand-config /usr/bin
 
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd && \
@@ -48,6 +44,11 @@ RUN echo "extension=mongo.so" > /usr/local/etc/php/conf.d/ext-mongo.ini && \
     echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini && \
     echo "zend_extension=xdebug.so" > /usr/local/etc/php/conf.d/ext-xdebug.ini
 
+# --- NODE --- #
+
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN apt-get install -y nodejs
+
 # --- COMPOSER --- #
 
 RUN curl -sS https://getcomposer.org/installer | php
@@ -55,8 +56,7 @@ RUN mv composer.phar /usr/local/bin/composer
 
 # --- ICU --- #
 
-RUN apt-get install tzdata && \
-    wget http://download.icu-project.org/files/icu4c/55.1/icu4c-55_1-src.tgz -O icu4c-55_1-src.tgz && \
+RUN wget http://download.icu-project.org/files/icu4c/55.1/icu4c-55_1-src.tgz -O icu4c-55_1-src.tgz && \
     tar -zxvf icu4c-55_1-src.tgz && \
     mkdir -p build && \
     cd build && \
@@ -65,8 +65,6 @@ RUN apt-get install tzdata && \
     apt-get install -y libicu-dev && \
     pecl install intl && \
     echo "extension=intl.so" > /usr/local/etc/php/conf.d/ext-intl.ini
-
-# --- PREPARE --- #
 
 EXPOSE 9000
 
