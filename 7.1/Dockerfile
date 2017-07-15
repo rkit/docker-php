@@ -1,14 +1,6 @@
 FROM php:7.1.4-fpm
 
-# --- ICU --- #
-
-RUN mkdir /opt/tmp && \
-    cd /opt/tmp && mkdir icu && cd icu && \
-    wget http://download.icu-project.org/files/icu4c/58.2/icu4c-58_2-src.tgz && \
-    tar zxvf icu4c-58_2-src.tgz && \
-    cd icu/source && \
-    ./configure --prefix==/usr/local && make && make install && \
-    rm -rf /opt/tmp
+# --- SOFT --- #
 
 RUN apt-get update && apt-get install -y \
     tzdata \
@@ -30,6 +22,18 @@ RUN apt-get update && apt-get install -y \
 
 RUN ln -s /usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/MagickWand-config /usr/bin
 
+# --- ICU --- #
+
+RUN mkdir /opt/tmp && \
+    cd /opt/tmp && mkdir icu && cd icu && \
+    wget http://download.icu-project.org/files/icu4c/58.2/icu4c-58_2-src.tgz && \
+    tar zxvf icu4c-58_2-src.tgz && \
+    cd icu/source && \
+    ./configure --prefix=/opt/icu582 && make && make install && \
+    rm -rf /opt/tmp
+
+# --- EXTENSIONS --- #
+
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd && \
     docker-php-ext-install opcache && \
@@ -37,6 +41,7 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     docker-php-ext-install pdo_mysql && \
     docker-php-ext-install mysqli && \
     docker-php-ext-install mbstring && \
+    docker-php-ext-configure intl --with-icu-dir=/opt/icu582 && \
     docker-php-ext-install intl
 
 RUN pecl channel-update pecl.php.net && \
