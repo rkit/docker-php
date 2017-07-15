@@ -24,8 +24,7 @@ RUN ln -s /usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/MagickWand-config 
 
 # --- ICU --- #
 
-RUN mkdir /opt/tmp && \
-    cd /opt/tmp && mkdir icu && cd icu && \
+RUN mkdir /opt/tmp && cd /opt/tmp && \
     wget http://download.icu-project.org/files/icu4c/58.2/icu4c-58_2-src.tgz && \
     tar zxvf icu4c-58_2-src.tgz && \
     cd icu/source && \
