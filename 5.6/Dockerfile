@@ -1,5 +1,7 @@
 FROM php:5.6.14-fpm
 
+# --- SOFT --- #
+
 RUN apt-get update && apt-get install -y \
     tzdata \
     openssh-client \
@@ -20,6 +22,17 @@ RUN apt-get update && apt-get install -y \
 
 RUN ln -s /usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/MagickWand-config /usr/bin
 
+# --- ICU --- #
+
+RUN mkdir /opt/tmp && cd /opt/tmp && \
+    wget http://download.icu-project.org/files/icu4c/58.2/icu4c-58_2-src.tgz && \
+    tar zxvf icu4c-58_2-src.tgz && \
+    cd icu/source && \
+    ./configure --prefix=/opt/icu582 && make && make install && \
+    rm -rf /opt/tmp
+
+# --- EXTENSIONS --- #
+
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd && \
     docker-php-ext-install opcache && \
@@ -27,7 +40,9 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     docker-php-ext-install mysql && \
     docker-php-ext-install pdo_mysql && \
     docker-php-ext-install mysqli && \
-    docker-php-ext-install mbstring
+    docker-php-ext-install mbstring && \
+    docker-php-ext-configure intl --with-icu-dir=/opt/icu582 && \
+    docker-php-ext-install intl
 
 RUN pecl channel-update pecl.php.net && \
     pecl install redis-2.2.8 && \
@@ -53,18 +68,6 @@ RUN apt-get install -y nodejs
 
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
-
-# --- ICU --- #
-
-RUN wget http://download.icu-project.org/files/icu4c/55.1/icu4c-55_1-src.tgz -O icu4c-55_1-src.tgz && \
-    tar -zxvf icu4c-55_1-src.tgz && \
-    mkdir -p build && \
-    cd build && \
-    CPPFLAGS="-DU_CHARSET_IS_UTF8=1" ../icu/source/runConfigureICU Linux && \
-    make install && \
-    apt-get install -y libicu-dev && \
-    pecl install intl && \
-    echo "extension=intl.so" > /usr/local/etc/php/conf.d/ext-intl.ini
 
 EXPOSE 9000
 
