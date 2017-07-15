@@ -1,4 +1,4 @@
-# Docker for PHP Stack
+# Docker Image for PHP Stack
 
 PHP 5.5, 5.6, 7.1
 
@@ -22,14 +22,4 @@ PHP 5.5, 5.6, 7.1
 - Composer
 - Node.js + NPM
 - Git
-
-## Install
-
-```shell
-# or
-docker pull rkit/docker-phpstack:5.5
-# or
-docker pull rkit/docker-phpstack:5.6
-# or
-docker pull rkit/docker-phpstack:7.1
-```
+- Ruby
