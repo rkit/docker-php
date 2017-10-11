@@ -1,4 +1,4 @@
-FROM php:7.1.4-fpm
+FROM php:7.1.10-fpm
 
 # --- SOFT --- #
 
