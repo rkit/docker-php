@@ -55,15 +55,13 @@ RUN pecl channel-update pecl.php.net && \
     pecl install mongo && \
     pecl install memcache && \
     pecl install memcached-2.2.0 && \
-    pecl install xdebug && \
     pecl install imagick
 
 RUN echo "extension=mongo.so" > /usr/local/etc/php/conf.d/ext-mongo.ini && \
     echo "extension=redis.so" > /usr/local/etc/php/conf.d/ext-redis.ini && \
     echo "extension=memcache.so" > /usr/local/etc/php/conf.d/ext-memcache.ini && \
     echo "extension=memcached.so" > /usr/local/etc/php/conf.d/ext-memcached.ini && \
-    echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini && \
-    echo "zend_extension=xdebug.so" > /usr/local/etc/php/conf.d/ext-xdebug.ini
+    echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini
 
 # --- NODE --- #
 
