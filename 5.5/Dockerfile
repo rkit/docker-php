@@ -11,16 +11,22 @@ RUN apt-get update && apt-get install -y \
     libpng12-dev \
     zlib1g-dev \
     libssl-dev \
+    libreadline-dev \
     g++ \
     libmemcached-dev \
     imagemagick \
     libmagickwand-6.q16-dev --no-install-recommends \
     wget \
+    bzip2 \ 
     sendmail \
-    git \
-    ruby
+    git
 
 RUN ln -s /usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/MagickWand-config /usr/bin
+
+# --- RUBY --- #
+
+ENV PATH="/root/.rbenv/bin:/root/.rbenv/shims:${PATH}"
+RUN curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer | bash && rbenv install 2.3.0 && rbenv global 2.3.0 && echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 
 # --- ICU --- #
 
